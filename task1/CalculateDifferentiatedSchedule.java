@@ -17,7 +17,6 @@ public class CalculateDifferentiatedSchedule {
     }
 
     public static void calculate(float creditAmount, int deadline, float interestRate, int issueDate) {
-        float sum = 0;
         LocalDate currentDate = LocalDate.now();
         float basePayment = creditAmount / deadline;
         float interestPayment;
@@ -31,10 +30,8 @@ public class CalculateDifferentiatedSchedule {
 
             interestPayment = (debt * interestRate/100 * currentDate.lengthOfMonth())/currentDate.lengthOfYear();
             System.out.println(currentDate + "\t" + (basePayment + interestPayment));
-            sum = sum + basePayment + interestPayment;
             debt = debt - basePayment;
         }
-        System.out.println(sum);
     }
 
     public static void main(String[] args) {
