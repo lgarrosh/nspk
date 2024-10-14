@@ -2,16 +2,30 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.Month;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.time.DayOfWeek;
 
 public class CalculateDifferentiatedSchedule {
 
-    public static boolean ifSunday(LocalDate date) {
-        // Получаем день недели
+    public static final List<LocalDate> HOLIDAYS = Collections.unmodifiableList(Arrays.asList(
+        LocalDate.of(2023, Month.JANUARY, 1),  // Новый год
+        LocalDate.of(2023, Month.MARCH, 8),    // Международный женский день
+        LocalDate.of(2023, Month.MAY, 9),       // День Победы
+        LocalDate.of(2023, Month.JUNE, 12),     // День России
+        LocalDate.of(2023, Month.NOVEMBER, 4)   // День народного единства
+    ));
+
+    public static boolean ifSundayOrHoliday(LocalDate date) {
         DayOfWeek dayOfWeek = date.getDayOfWeek();
 
-        // Выводим результат
         if (dayOfWeek.name() == "SUNDAY")
+            return (true);
+        if (HOLIDAYS.stream().anyMatch(holiday -> 
+        holiday.getDayOfMonth() == date.getDayOfMonth() && 
+        holiday.getMonthValue() == date.getMonthValue()))
             return (true);
         return (false);
     }
@@ -23,10 +37,10 @@ public class CalculateDifferentiatedSchedule {
         float debt = creditAmount;
         System.out.println("Дата:" + "\t\t" + "Платеж по кредиту:");
         for (int i = 0; i < deadline; i++) {
-            currentDate = currentDate = currentDate.plusMonths(1);
+            currentDate = currentDate.plusMonths(1);
             currentDate = currentDate.withDayOfMonth(Math.min(issueDate, currentDate.lengthOfMonth()));
-            if (ifSunday(currentDate))
-            currentDate = currentDate = currentDate.plusDays(1);
+            while (ifSundayOrHoliday(currentDate))
+                currentDate = currentDate.plusDays(1);
 
             interestPayment = (debt * interestRate/100 * currentDate.lengthOfMonth())/currentDate.lengthOfYear();
             System.out.println(currentDate + "\t" + (basePayment + interestPayment));
